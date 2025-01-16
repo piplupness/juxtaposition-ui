@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable require-atomic-updates */
 const config = require('../../config.json');
 const util = require('../util');
 
@@ -69,7 +66,7 @@ async function auth(request, response, next) {
 	}
 
 	request.lang = util.processLanguage(request.paramPackData);
-	//console.timeEnd(`Time Request ${request.timerDate}`);
+	// console.timeEnd(`Time Request ${request.timerDate}`);
 	return next();
 }
 

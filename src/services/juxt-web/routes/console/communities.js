@@ -1,9 +1,9 @@
 const express = require('express');
+const multer = require('multer');
+const moment = require('moment');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-const multer = require('multer');
-const moment = require('moment');
 const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 const { POST } = require('../../../../models/post');
@@ -93,7 +93,6 @@ router.get('/:communityID/related', async function (req, res) {
 		pid: req.pid,
 		moderator: req.moderator
 	});
-
 });
 
 router.get('/:communityID/:type', async function (req, res) {
@@ -121,7 +120,8 @@ router.get('/:communityID/:type', async function (req, res) {
 	if (children.length === 0) {
 		children = null;
 	}
-	let posts; let type;
+	let posts;
+	let type;
 
 	if (req.params.type === 'hot') {
 		posts = await database.getNumberPopularCommunityPostsByID(community, config.post_limit);
@@ -251,7 +251,7 @@ router.post('/follow', upload.none(), async function (req, res) {
 	}
 
 	if (popularCommunities && updated) {
-		const index = popularCommunities.findIndex((element) => element.olive_community_id === community.olive_community_id);
+		const index = popularCommunities.findIndex(element => element.olive_community_id === community.olive_community_id);
 		if (index !== -1) {
 			popularCommunities[index].followers = community.followers;
 			redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
@@ -272,7 +272,7 @@ async function calculateMostPopularCommunities() {
 	}
 	return Object.entries(communityIds)
 		.sort((a, b) => b[1] - a[1])
-		.map((entry) => entry[0]);
+		.map(entry => entry[0]);
 }
 
 module.exports = router;

@@ -1,14 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const parseString = require('xml2js').parseString;
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-const request = require('request');
-const logger = require('../../../../logger');
 
 router.get('/', async function (req, res) {
-	res.render(req.directory + '/login.ejs', { toast: null, cdnURL: config.CDN_domain, });
+	res.render(req.directory + '/login.ejs', { toast: null, cdnURL: config.CDN_domain });
 });
 
 router.post('/', async (req, res) => {
@@ -17,13 +14,13 @@ router.post('/', async (req, res) => {
 		console.error(e.details);
 		switch (e.details) {
 			case 'INVALID_ARGUMENT: User not found':
-				res.render(req.directory + '/login.ejs', { toast: 'Username was invalid.', cdnURL: config.CDN_domain, });
+				res.render(req.directory + '/login.ejs', { toast: 'Username was invalid.', cdnURL: config.CDN_domain });
 				break;
 			case 'INVALID_ARGUMENT: Password is incorrect':
-				res.render(req.directory + '/login.ejs', { toast: 'Password was incorrect.', cdnURL: config.CDN_domain, });
+				res.render(req.directory + '/login.ejs', { toast: 'Password was incorrect.', cdnURL: config.CDN_domain });
 				break;
 			default:
-				res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', cdnURL: config.CDN_domain, });
+				res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', cdnURL: config.CDN_domain });
 				break;
 		}
 	});
@@ -33,7 +30,7 @@ router.post('/', async (req, res) => {
 
 	const PNID = await util.getUserDataFromToken(login.accessToken);
 	if (!PNID) {
-		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', cdnURL: config.CDN_domain, });
+		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', cdnURL: config.CDN_domain });
 	}
 
 	const pid = PNID.pid;
@@ -73,6 +70,5 @@ router.post('/', async (req, res) => {
 	res.cookie('token_type', 'Bearer', { domain: cookieDomain });
 	res.redirect('/');
 });
-
 
 module.exports = router;

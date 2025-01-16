@@ -1,12 +1,12 @@
+const crypto = require('crypto');
 const express = require('express');
+const moment = require('moment');
+const snowflake = require('node-snowflake').Snowflake;
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
-const moment = require('moment');
 const { CONVERSATION } = require('../../../../models/conversation');
-const crypto = require('crypto');
-const snowflake = require('node-snowflake').Snowflake;
 const router = express.Router();
 
 router.get('/', async function (req, res) {
@@ -48,7 +48,7 @@ router.post('/new', async function (req, res) {
 					pid: user2.pid,
 					official: (user2.accessLevel >= 2),
 					read: false
-				},
+				}
 			]
 		};
 		const newConversations = new CONVERSATION(document);
@@ -65,7 +65,9 @@ router.post('/new', async function (req, res) {
 		res.status(422);
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
-	let painting = ''; let paintingURI = ''; let screenshot = null;
+	let painting = '';
+	let paintingURI = '';
+	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		painting = req.body.painting.replace(/\0/g, '').trim();
 		paintingURI = await util.processPainting(painting, true);
@@ -192,7 +194,7 @@ router.get('/new/:pid', async function (req, res) {
 				pid: user2.pid,
 				official: (user2.accessLevel >= 2),
 				read: false
-			},
+			}
 		]
 	};
 	const newConversations = new CONVERSATION(document);
@@ -253,6 +255,5 @@ async function generatePostUID(length) {
 	id = (inuse ? await generatePostUID() : id);
 	return id;
 }
-
 
 module.exports = router;
