@@ -137,7 +137,7 @@ router.post('/accounts/:pid', async (req, res) => {
 		await util.newNotification({
 			pid: pid,
 			type: 'notice',
-			text: `You have been limited from posting until ${moment(req.body.ban_lift_date)}. Reason: \"${req.body.ban_reason}\". If you have any questions contact the moderators in the Discord server or forum.`,
+			text: `You have been limited from posting until ${moment(req.body.ban_lift_date)}. Reason: "${req.body.ban_reason}". If you have any questions contact the moderators in the Discord server or forum.`,
 			image: '/images/bandwidthalert.png',
 			link: '/titles/2551084080/new'
 		});
